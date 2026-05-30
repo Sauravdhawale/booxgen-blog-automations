@@ -282,7 +282,7 @@ def create_featured_image(title, focus_keyword):
         draw.text((90, y), line, fill=black, font=title_font)
         y += 78
     draw.text((95, y + 20), focus_keyword, fill=red, font=sub_font)
-    draw.text((95, 790), "SEO • Development • Branding • B2B Growth", fill=black, font=small_font)
+    draw.text((95, 790), "SEO | Development | Branding | B2B Growth", fill=black, font=small_font)
 
     output = io.BytesIO()
     image.save(output, "PNG", optimize=True)

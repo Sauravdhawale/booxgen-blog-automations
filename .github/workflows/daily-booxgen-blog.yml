@@ -29,6 +29,8 @@ jobs:
       - name: Install dependencies
         run: pip install -r requirements.txt
 
+      - name: Check required secrets
+        run: python scripts/check_secrets.py
+
       - name: Publish daily SEO blog
         run: python scripts/publish_daily_blog.py
-
