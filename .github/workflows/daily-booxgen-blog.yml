@@ -15,7 +15,7 @@ jobs:
       WP_USERNAME: ${{ secrets.WP_USERNAME }}
       WP_APP_PASSWORD: ${{ secrets.WP_APP_PASSWORD }}
       OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
-      OPENAI_MODEL: ${{ vars.OPENAI_MODEL || 'gpt-4.1' }}
+      OPENAI_MODEL: ${{ vars.OPENAI_MODEL || 'gpt-5-mini' }}
       DRY_RUN: ${{ vars.DRY_RUN || 'false' }}
     steps:
       - name: Check out repository
@@ -31,6 +31,9 @@ jobs:
 
       - name: Check required secrets
         run: python scripts/check_secrets.py
+
+      - name: Validate WordPress and OpenAI access
+        run: python scripts/preflight.py
 
       - name: Publish daily SEO blog
         run: python scripts/publish_daily_blog.py

@@ -21,7 +21,7 @@ WP_URL = os.environ["WP_URL"].rstrip("/")
 WP_USERNAME = os.environ["WP_USERNAME"]
 WP_APP_PASSWORD = os.environ["WP_APP_PASSWORD"]
 OPENAI_API_KEY = os.environ["OPENAI_API_KEY"]
-OPENAI_MODEL = os.getenv("OPENAI_MODEL", "gpt-4.1")
+OPENAI_MODEL = os.getenv("OPENAI_MODEL", "gpt-5-mini")
 DRY_RUN = os.getenv("DRY_RUN", "false").lower() == "true"
 
 FOCUS_TOPICS = [
@@ -76,7 +76,10 @@ def wp_headers():
 def request_json(method, path, **kwargs):
     url = f"{WP_URL}/wp-json/{path.lstrip('/')}"
     response = requests.request(method, url, timeout=60, **kwargs)
-    response.raise_for_status()
+    try:
+        response.raise_for_status()
+    except requests.HTTPError as exc:
+        raise RuntimeError(f"WordPress request failed: {method} {url} -> {response.status_code} {response.text[:500]}") from exc
     return response.json()
 
 
@@ -189,7 +192,10 @@ def call_openai(prompt):
         json=payload,
         timeout=180,
     )
-    response.raise_for_status()
+    try:
+        response.raise_for_status()
+    except requests.HTTPError as exc:
+        raise RuntimeError(f"OpenAI request failed: HTTP {response.status_code} {response.text[:800]}") from exc
     data = response.json()
     text = data.get("output_text")
     if not text:

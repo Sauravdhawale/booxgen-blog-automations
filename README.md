@@ -25,7 +25,7 @@ Add these in GitHub:
 
 Optional repository variable:
 
-- `OPENAI_MODEL`: default is `gpt-4.1`
+- `OPENAI_MODEL`: default is `gpt-5-mini`
 - `DRY_RUN`: set to `true` to create drafts instead of publishing
 
 ## What It Does
